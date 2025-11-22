@@ -7,7 +7,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Handle POST /ollama
 app.post('/ollama', async (req, res) => {
-    const prompt = req.body.prompt || 'I just wanted to say hi.';
+    const prompt = req.body.prompt || '';
     try {
         // Call Ollama API
         const ollamaResponse = await fetch('http://localhost:11434/api/chat', {
@@ -18,11 +18,11 @@ app.post('/ollama', async (req, res) => {
                 messages: [
                     {
                         role: 'system',
-                        content: 'You are a helpful and quick chatbot. Be brief and concise. Use up to four paragraphs.\n' +
-                          'Use \<br\> for new lines in text.\n' +
-                          'Use <span> with style="font-size: 16px" for headers. Remember to end with </span>.\n' +
-                          'Use <span> with style="font-size: 12px" for smaller headers.\n' +
-                          'You can use style="color:blue" for special highlight of important words and phrases.'
+                        content: 'You are a bot replying to a user. Be brief, descriptive, and most importantly, fun! :D' +
+                          'To use a new line, you must insert <br>. ' +
+                          'To make bold text, wrap text between <span class="bold"> and </span>. ' +
+                          'To make italic text, wrap text between <span class="italic"> and </span>. ' +
+                          'Emoji cannot render on the user\'s device, so never use them.'
                     },
                     {
                         role: 'user',

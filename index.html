@@ -5,13 +5,16 @@
     <title>GPTi</title>
     <meta name="viewport" content="width=device-width" />
     <style>
-      html,body { margin: 0px; }
+      html,body { margin: 0; }
       #top, #bottom { width: 240px; height:176px; overflow: hidden; }
       #top { background-image: url("img_top.gif"); background-color: #c0c0c0; }
       #bottom { background-image: url("img_bottom.gif"); background-color: #606060; }
-      #output { margin-left: 8px; margin-right: 8px; margin-top: 12px; margin-bottom: 16px; display:block; font-size: 8px; }
-      textarea { margin-left: 16px; width:202px; margin-top:8px; height: 6em; }
-      button { margin-left:161px; margin-top: 4px; }
+      #output { margin: 12px 8px 16px; display: block; font-size: 8px; }
+      #prompt { margin-left: 16px; width: 202px; margin-top: 8px; height: 6em; }
+      button { margin-left: 160px; margin-top: 4px; }
+      .big { font-size: 16px; }
+      .important, .bold, .italic { color: blue; }
+      .comment { opacity: 0.5; }
     </style>
   </head>
   <script type="text/javascript">document.body.scrollTop = 176;</script>
@@ -23,25 +26,25 @@
     </div>
     <div id="bottom">
       <form method="post" action="/ollama" id="promptForm">
-        <textarea type="text" name="prompt" id="prompt" placeholder="Enter your prompt"></textarea>
+        <textarea name="prompt" id="prompt">Who is Nintendo's Super Mario?</textarea>
         <button type="submit">Submit</button>
       </form>
     </div>
     <script>
-      document.getElementById('output').innerHTML = '        <span style="font-size:12px;">Welcome to GPTi!</span>\n' +
-        '        <br>\n' +
-        '        Thanks to scientific discoveries,<br>your Nintendo® DSi™ system can now<br>answer complex questions for you!\n' +
-        '        <br>\n' +
-        '        <br>\n' +
-        '        Write a question with the Touch Screen, and tap Send to have it answered.\n' +
-        '        <br>\n' +
-        '        <br>\n' +
-        '        <br>\n' +
-        '        <span style="opacity:0.5;">Your data will be harvested without your consent and sold to the highest bidder.</span>\n' +
-        '        <span style="opacity:0.5;">You consent by continuing to exist.</span>\n'
-    </script>
-    <script>
-      // Minimal JS for Opera 9.50 and older browsers
+      const msgDefault = '<span class="big">Welcome to GPTi!</span>\n' +
+        '<br>\n' +
+        'Thanks to many <span class="important">scientific discoveries</span>,<br>your Nintendo® DSi™ system can now<br>answer complex questions for you!\n' +
+        '<br>\n' +
+        '<br>\n' +
+        'Write a question with the Touch Screen, and tap Send to have it answered.\n' +
+        '<br>\n' +
+        '<br>\n' +
+        '<br>\n' +
+        '<span class="comment">Your data will be harvested without your consent and sold to the highest bidder.<br>You consent by continuing to exist.</span>\n';
+      const msgSent = 'Your prompt has been submitted.<br>Please wait for a response.';
+      const msgStatus502 = '<span class="big">502 Bad Gateway</span><br><br><span class="comment">Make sure npm is running.</span>';
+      const msgStatus500 = '<span class="big">500 Internal Server Error</span><br><br><span class="comment">Make sure Ollama is running.</span>';
+      const msgStatus404 = '<span class="big">404 Not Found</span><br><br><span class="comment">/ollama should have a reverse proxy pointing to npm at localhost:3000.<span>';
       var form = document.getElementById('promptForm');
       form.onsubmit = function(e) {
         e.preventDefault();
@@ -52,10 +55,21 @@
           if (xhr.readyState === 4 && xhr.status === 200) {
             document.getElementById('output').innerHTML = xhr.responseText;
           }
+          if (xhr.status === 404) {
+            document.getElementById('output').innerHTML = msgStatus404;
+          }
+          if (xhr.status === 502) {
+            document.getElementById('output').innerHTML = msgStatus502;
+          }
+          if (xhr.status === 500) {
+            document.getElementById('output').innerHTML = msgStatus500;
+          }
         };
         var prompt = document.getElementById('prompt').value;
         xhr.send('prompt=' + encodeURIComponent(prompt));
+        document.getElementById('output').innerHTML = msgSent + '<br><br>Your prompt is:<br><span class="comment">' + prompt + '</span>';
       };
+      document.getElementById('output').innerHTML = msgDefault;
     </script>
   </body>
 </html>
