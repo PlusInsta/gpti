@@ -9,11 +9,12 @@ This was primarily created with AI, because I hate the thought of learning JavaS
 ## How it works
 1. Spin up a web server with index.html. (This is the frontend.)
 2. Run `npm install && npm start` in the folder. (This is the Ollama communication part.)
-3. Obviously, you need to have Ollama running on port 11434.
-4. On the Nintendo DSi, open the browser, and navigate to the web server.
-5. Enter a prompt on the Touch Screen.
-6. Tap "Submit".
-7. The response from the LLM will appear on the Top Screen.
+3. Obviously, you need to have Ollama running at http://localhost:11434.
+4. Make /ollama on the web server a reverse proxy for http://localhost:3000.
+5. On the Nintendo DSi, open the browser, and navigate to the web server.
+6. Enter a prompt on the Touch Screen.
+7. Tap "Submit".
+8. The response from the LLM will appear on the Top Screen.
 
 It is not currently possible to scroll the Top Screen view, so the response may overflow past the bounding box. It works reasonably well with gemma3:12b, but it ultimately depends on the system prompt and the model being used.
 
