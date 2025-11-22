@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <title>GPTi</title>
+    <meta name="viewport" content="width=device-width" />
+    <style>
+      html,body { margin: 0px; }
+      #top, #bottom { width: 240px; height:176px; overflow: hidden; }
+      #top { background-image: url("img_top.gif"); background-color: #c0c0c0; }
+      #bottom { background-image: url("img_bottom.gif"); background-color: #606060; }
+      #output { margin-left: 8px; margin-right: 8px; margin-top: 12px; margin-bottom: 16px; display:block; font-size: 8px; }
+      textarea { margin-left: 16px; width:202px; margin-top:8px; height: 6em; }
+      button { margin-left:161px; margin-top: 4px; }
+    </style>
+  </head>
+  <script type="text/javascript">document.body.scrollTop = 176;</script>
+  <body>
+    <div id="top">
+      <div id="output">
+        <!-- LLM output will appear here -->
+      </div>
+    </div>
+    <div id="bottom">
+      <form method="post" action="/ollama" id="promptForm">
+        <textarea type="text" name="prompt" id="prompt" placeholder="Enter your prompt"></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      document.getElementById('output').innerHTML = '        <span style="font-size:12px;">Welcome to GPTi!</span>\n' +
+        '        <br>\n' +
+        '        Thanks to scientific discoveries,<br>your Nintendo® DSi™ system can now<br>answer complex questions for you!\n' +
+        '        <br>\n' +
+        '        <br>\n' +
+        '        Write a question with the Touch Screen, and tap Send to have it answered.\n' +
+        '        <br>\n' +
+        '        <br>\n' +
+        '        <br>\n' +
+        '        <span style="opacity:0.5;">Your data will be harvested without your consent and sold to the highest bidder.</span>\n' +
+        '        <span style="opacity:0.5;">You consent by continuing to exist.</span>\n'
+    </script>
+    <script>
+      // Minimal JS for Opera 9.50 and older browsers
+      var form = document.getElementById('promptForm');
+      form.onsubmit = function(e) {
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/ollama', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById('output').innerHTML = xhr.responseText;
+          }
+        };
+        var prompt = document.getElementById('prompt').value;
+        xhr.send('prompt=' + encodeURIComponent(prompt));
+      };
+    </script>
+  </body>
+</html>
