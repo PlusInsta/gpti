@@ -1,6 +1,8 @@
 # gpti
 Ollama client that runs in the Nintendo DSi Browser. Why not?
 
+![Screenshot](https://github.com/PlusInsta/gpti/blob/main/screenshot.png?raw=true)
+
 ## Disclaimer
 This was primarily created with AI, because I hate the thought of learning JavaScript. I used WebStorm IDE paired with GPT-OSS 20B running locally with Ollama. Parts were touched up, but this is still primarily AI-generated, including the two background images made with deliberate-v2.
 
